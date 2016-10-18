@@ -31,6 +31,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'audit.apps.AuditConfig',
+    'project.apps.ProjectConfig',
+    'register.apps.RegisterConfig',
+    'documents.apps.DocumentsConfig',
+    'status.apps.StatusConfig',
+    'rules.apps.RulesConfig',
+    'results.apps.ResultsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,7 +82,7 @@ WSGI_APPLICATION = 'website.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_db',
         'USER': 'root',
         'PASSWORD': '',
