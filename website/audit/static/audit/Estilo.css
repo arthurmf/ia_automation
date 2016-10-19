@@ -1,0 +1,47 @@
+.estilo-header-ey{
+	padding: 70px;
+	background-color: #333;
+}
+
+.estilo-h1-ey{
+	text-align: center;
+	font-size: 40px;
+	color: #FFF;
+	font-family: 'EYInterstate', 'Roboto', sans-serif;
+	text-align: left;
+	text-indent: 60px;
+	vertical-align: text-bottom;
+	position: absolute;
+	top:84px;
+	left: 30px;
+}
+
+.estilo-footer-ey{
+	background-color: black;
+	padding: 10px;
+	font-size: 10px;
+	color: #FFF;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	font-family: 'EYInterstate', 'Roboto', sans-serif;
+}
+
+.conteudo{
+	padding: 200px;
+}
+
+.logo-ey{
+	position: absolute;
+	top: 60px;
+	left: 25px;
+}
+
+.estilo-p-footer{
+	display: inline-block;
+}
+
+.estilo-versao{
+	float: right;
+	text-indent: -45px;
+}
