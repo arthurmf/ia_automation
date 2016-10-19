@@ -7,6 +7,9 @@ from documents.models import Template
 class Operator(models.Model):
     operator_description = models.CharField(max_length=250)
 
+    def __str__(self):
+        return self.operator_description
+
 class Definitions(models.Model):
     definition_name = models.CharField(max_length=250)
     definition_description = models.CharField(max_length=250)
@@ -17,3 +20,5 @@ class Definitions(models.Model):
     template = models.ForeignKey(Template, on_delete=models.PROTECT)
     definition_result = models.CharField(max_length=2000)
 
+    def __str__(self):
+        return self.definition_name

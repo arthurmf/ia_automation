@@ -14,6 +14,9 @@ class Template(models.Model):
     template_version = models.CharField(max_length=10)
     template_author = models.ForeignKey(Ey_employee, on_delete=models.PROTECT)
     template_path = models.CharField(max_length=500)
+    
+    def __str__(self):
+        return self.template_name
 
 class Request(models.Model):
     activity = models.ForeignKey(Activity, on_delete=models.PROTECT)

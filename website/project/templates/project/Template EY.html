@@ -1,0 +1,56 @@
+<!DOCUMENT html>
+
+{% load static %}
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="{% static "/project/reset.css" %}">
+		<link rel="stylesheet" href="{% static "/project/style.css" %}">
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	</head>
+	
+    
+	<body>
+		<main>
+			<div class="ey-header-style"></div>
+            <div class="ey-subheader-style"></div>
+			<h1 class="ey-h1-style">IA - Automation Tool</h1>
+			<img class="ey-logo" src="{% static "/project/EYNewLogo.png" %}"/>
+            <h2 class="ey-h2-style"><a>Projetos</a></h2>
+
+			<div class="content">
+                <div  class="content-table">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+			</div>
+            
+
+			
+
+		</main>
+	
+	</body>
+	
+	    
+	<footer class="ey-footer-style">
+		<p class="p-footer-style">&copy EY</p>
+		<p class="p-footer-style version-style">Version 0.0.1</p>
+
+	
+	</footer>
+
+	<!--
+    <script>
+        var teste1 = "/audit";
+        var teste2 = "/static/audit";
+        
+        var res = teste1.concat(teste2)
+        
+        
+        document.getElementById('teste').innerHTML = res;
+    </script>
+    -->
+    
+</html>
