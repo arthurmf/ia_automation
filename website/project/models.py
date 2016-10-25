@@ -19,7 +19,7 @@ class Activity(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     audit = models.ForeignKey(Type, on_delete=models.PROTECT)
-    client = models.ForeignKey(Client, on_delete=models.PROTECT)
+    client = models.ForeignKey(Client, on_delete=models.PROTECT, related_name='clientes_projeto')
     status = models.ForeignKey(List, on_delete=models.PROTECT)
     ey_employee_master = models.ForeignKey(Ey_employee, on_delete=models.PROTECT)
     service_style = models.ForeignKey(Service_style, on_delete=models.PROTECT)
@@ -27,3 +27,16 @@ class Activity(models.Model):
 
     def __str__(self):
         return self.project_name
+        
+    def return_list(self):
+        return [self.project_name,
+                self.activity_description,
+                self.client,
+                self.ey_employee_master,
+                self.start_date,
+                self.end_date,
+                self.audit,
+                self.status]
+    
+    #def nome_cliente(self, cliente_projeto):
+       # return Activity(project_name=self, client=cliente_projeto).get

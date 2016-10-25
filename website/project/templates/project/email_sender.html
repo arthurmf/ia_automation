@@ -1,0 +1,38 @@
+{% extends 'project/Template EY.html' %}
+
+{% load static %}
+{% block content %}
+    <!-- <link rel="stylesheet" href="{% static "/project/style_new.css" %}"> -->   
+        
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+<div  class="content-table">
+    <h2 class="ey-h2-style"><a class="ey_anchor_style" href="/project">Projetos</a> > Detalhes do Projeto: {{activity.project_name}}</h2>
+    <h3 class="ey-h3-style">Status: {{activity.status}}</i></h3>
+
+    <div align="center">
+        <table>
+            <th>Template Name</th>
+            <th>Template Description</th>
+            <th>Audit Type</th>
+            <th>E-mail</th>
+            {% for template in templates %}
+                <tr>
+                    <td>{{template.template_name}}</td>
+                    <td>{{template.template_description}}</td>
+                    <td>{{template.audit_type}}</td>
+                    <td>
+                        <form action="" method="post" autocomplete="on">{% csrf_token %}
+                            <input type="textarea" name="email_field_{{ forloop.counter }}" >
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <form action="" method="post">{% csrf_token %}
+            <button class="button" type="submit" name="teste"><span>Send </span></button>
+        <form>
+
+    </div>
+</div>
+{% endblock %}

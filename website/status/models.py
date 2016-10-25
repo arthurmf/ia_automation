@@ -15,5 +15,6 @@ class List(models.Model):
 
 class Workflow(models.Model):
     workflow_current_status = models.CharField(max_length=10)
-    workflow_next_status = models.CharField(max_length=10)
+    workflow_success_next_status = models.CharField(max_length=10)
+    workflow_fail_next_status = models.CharField(max_length=10)
 

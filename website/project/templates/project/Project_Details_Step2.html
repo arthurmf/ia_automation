@@ -1,0 +1,35 @@
+{% extends 'project/Template EY.html' %}
+
+{% block content %}
+{% load app_filters %}
+
+
+    <div  class="content-table">
+        <h2 class="ey-h2-style"><a class="ey_anchor_style" href="/project">Projetos</a> > Detalhes do Projeto: {{activity.project_name}}</h2>
+        <h3 class="ey-h3-style">Status: {{activity.status}}</i></h3>
+
+
+        <table>
+            <th>Project Name</th>
+            <th>Document Name</th>
+            <th>EY Requester</th>
+            <th>Upload</th>
+            {% for doc in documents %}
+                <tr>
+                    <td>{{doc.activity}}</td>
+                    <td>{{doc.template}}</td>
+                    <td>{{doc.ey_employee}}</td>
+                    <td>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="file" name="myfile">
+                            <button class="button" type="submit"><span>Send </span></button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        
+    </div>
+
+{% endblock %}

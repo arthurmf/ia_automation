@@ -32,6 +32,17 @@
 	left: 25px;
 }
 
+.ey-h3-style{
+	text-align: center;
+	font-size: 15px;
+	font-family: 'EYInterstate', 'Roboto', sans-serif;
+	text-align: left;
+	vertical-align: text-bottom;
+	position: absolute;
+	top:180px;
+	right: 25px;
+}
+
 .ey-footer-style{
 	background-color: black;
 	padding: 10px;
@@ -43,8 +54,12 @@
 	font-family: 'EYInterstate', 'Roboto', sans-serif;
 }
 
+.ey_anchor_style{
+    color:black;
+}
+
 .content{
-	width: 85%;
+	width: 100%;
     align-content: center;
 }
 
@@ -64,26 +79,69 @@
 }
 
 .content-table{
-	width: 50%;
+	width: 70%;
     margin: auto;
     padding: 50px;
 }
 
+.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #999999;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 15px;
+  padding: 15px;
+  width: 150px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  float: right
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+
 table a:link {
 	color: #666;
 	font-weight: bold;
-	text-decoration:none;
+	text-decoration:underline;
 }
 table a:visited {
 	color: #999999;
 	font-weight:bold;
-	text-decoration:none;
+	text-decoration:underline;
 }
 table a:active,
 table a:hover {
 	color: #bd5a35;
 	text-decoration:underline;
 }
+
 table {
 	font-family:Arial, Helvetica, sans-serif;
 	color:#666;
@@ -112,7 +170,7 @@ table th {
 	background: -moz-linear-gradient(top,  #ededed,  #ebebeb);
 }
 table th:first-child{
-	text-align: left;
+	text-align: center;
 	padding-left:20px;
 }
 table tr:first-child th:first-child{
@@ -130,7 +188,7 @@ table tr{
 	padding-left:20px;
 }
 table tr td:first-child{
-	text-align: left;
+	text-align: center;
 	padding-left:20px;
 	border-left: 0;
 }

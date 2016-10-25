@@ -1,0 +1,21 @@
+<!DOCUMENT html> 
+
+<p>
+    Olá!
+</p>
+<p>
+    Você esta recebendo os seguintes links para <strong>download</strong>:
+</p>
+<ul>
+{% for template in template_list %}
+<li>
+    <a href="{{ BASE_DIR }}/{{ template.template_path }}">{{ template.template_name }}</a>
+</li>
+{% endfor %}
+</ul>    
+<p>
+Att,
+</p>
+<p>
+IA Automation Tool
+</p>
