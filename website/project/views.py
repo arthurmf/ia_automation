@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from .forms import ActivityForm, Template_Upload
 from project.models import Activity
-from documents.models import Request
+from documents.models import Request, Received
 from django.core.mail import send_mail
-from documents.models import Template
+from documents.models import Template, Request
 from documents.forms import EmailForm
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
@@ -33,7 +33,8 @@ def new(request):
             post = form.save(commit=False)
             #post.author = request.user
             post.save()
-            return HttpResponseRedirect("feliz")
+            #return HttpResponseRedirect("feliz")
+            return redirect("index")
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -47,13 +48,15 @@ def handle_uploaded_file(f):
             destination.write(chunk)
   
             
-def sending_email(email_variable, template_list):
+def sending_email(email_variable, template_list, email_page):
+    print email_variable
     try:
-        email_list = email_variable[0][0].split(";")           
+        email_list = email_variable[0].split(";")           
     except:
         email_list = []
         print "Deu ruim 1 ..."
     for email in email_list:
+        print email_list
         if "@" in email:
             message = []
             #for i in range(0, len(email_variable)):
@@ -62,7 +65,7 @@ def sending_email(email_variable, template_list):
             subject = "Email de teste django"
             from_email = "ia.automation.tool@gmail.com"
             to = email
-            message = get_template('project/email.html').render(Context({'template_list': template_list, 'BASE_DIR' : BASE_DIR}))
+            message = get_template(email_page).render(Context({'template_list': template_list, 'BASE_DIR' : BASE_DIR}))
             msg = EmailMessage(subject, mark_safe(message), to=[to], from_email=from_email)
             msg.content_subtype = 'html'
             msg.send()
@@ -84,7 +87,11 @@ def update_status(project_id, choice):
         print str(current_status) + " --> " + str(next_status)
     else:
         print "deu ruim..."
-    return next_status
+    
+    current_project.status_id = next_status
+    current_project.save()
+    return "Status alterado de: " + str(current_status) + " para: " + str(next_status)
+    #return next_status
             
 def simple_upload(request):
     if request.method == 'POST' and request.FILES['myfile']:
@@ -110,18 +117,24 @@ def step(request, perfil_id):
                
 def step_one(request, perfil_id):
     print "STEP 1"
+    Request.objects.filter(activity_id=perfil_id).delete()
     teste = Activity.objects.get(id=perfil_id)
     templates = Template.objects.all()
-    if request.method == 'POST':        
+    if request.method == 'POST':
         form = EmailForm(request.POST)
-        email_body = []        
+        email_body = []
+        print len(form.data)        
         for i in range(1, (len(form.data) - 1)):
-            email_body.append([form.data.get('email_field_' + str(i)), templates[i-1].template_name])  
-        sending_email(email_body, templates)
+            email_body.append(form.data.get('email_field_' + str(i))) 
+        sending_email(email_body, templates, 'project/email.html')
         next_status = update_status(perfil_id, "success")
-        current_project = Activity.objects.get(id=perfil_id)
-        current_project.status_id = next_status
-        current_project.save()
+        #current_project = Activity.objects.get(id=perfil_id)
+        #current_project.status_id = next_status
+        #current_project.save()
+        Request(activity_id=perfil_id,
+				client_employee_id=1,
+				ey_employee_id=1,
+				template_id=1).save()
         return render(request, 'project/email_sender.html', {'activity':teste,'templates': templates, 'form': form})
     else:
         form = EmailForm()
@@ -130,18 +143,35 @@ def step_one(request, perfil_id):
 
 def step_two(request, perfil_id):
     print "STEP 2"
+    Received.objects.filter(activity_id=perfil_id).delete() 
     teste = Activity.objects.get(id=perfil_id)
     req = Request.objects.filter(activity__id=perfil_id)
     #try:
     req_object = Request.objects.get(activity__id=perfil_id)
 
     mail_recipient = req_object.ey_employee.ey_employee_email
+    mail_recipient_list = []
+    mail_recipient_list.append(mail_recipient)
     upload_form = Template_Upload()
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
+        sending_email(mail_recipient_list, myfile, 'project/email_step2.html')
+        
+        Received(received_name = req_object.template.template_name, 
+                 received_description = req_object.template.template_description,
+                 received_format = req_object.template.template_format,
+                 received_version = req_object.template.template_version,
+                 received_path = req_object.template.template_path,
+                 activity = teste,
+                 client_employee = req_object.client_employee,
+                 ey_employee = req_object.ey_employee,
+                 template = req_object.template).save()
+        next_status = update_status(perfil_id, "success")
+        #teste.status_id = next_status
+        #teste.save()
         return render(request, 'project/Project_Details_Step2_Success.html', {
             'uploaded_file_url': uploaded_file_url
         })

@@ -8,7 +8,7 @@
         <h2 class="ey-h2-style"><a class="ey_anchor_style" href="/project">Projetos</a> > Detalhes do Projeto: {{activity.project_name}}</h2>
         <h3 class="ey-h3-style">Status: {{activity.status}}</i></h3>
 
-
+<form method="post" enctype="multipart/form-data">
         <table>
             <th>Project Name</th>
             <th>Document Name</th>
@@ -23,13 +23,14 @@
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <input type="file" name="myfile">
-                            <button class="button" type="submit"><span>Send </span></button>
+                            
                         </form>
                     </td>
                 </tr>
             {% endfor %}
         </table>
-        
+        <button class="button" type="submit"><span>Send </span></button>
+         </form>
     </div>
 
 {% endblock %}
