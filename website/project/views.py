@@ -39,15 +39,8 @@ def new(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = ActivityForm()
-
     return render(request, 'project/new.html', {'form': form})
 
-def handle_uploaded_file(f):
-    with open('C:/Users/Eric.Boury/Desktop/name.txt', 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-  
-            
 def sending_email(email_variable, template_list, email_page):
     print email_variable
     try:
@@ -58,10 +51,7 @@ def sending_email(email_variable, template_list, email_page):
     for email in email_list:
         print email_list
         if "@" in email:
-            message = []
-            #for i in range(0, len(email_variable)):
-            #    message.append(template_list[i].template_name)
-            
+            message = []           
             subject = "Email de teste django"
             from_email = "ia.automation.tool@gmail.com"
             to = email
@@ -69,8 +59,6 @@ def sending_email(email_variable, template_list, email_page):
             msg = EmailMessage(subject, mark_safe(message), to=[to], from_email=from_email)
             msg.content_subtype = 'html'
             msg.send()
-            #html_message = loader.render_to_string('project/email.html', {'message': message})
-            #send_mail(subject, "X", from_email, [to], fail_silently=False, html_message=html_message)
         else:
             print "Deu ruim 2 ..."
 
@@ -91,7 +79,6 @@ def update_status(project_id, choice):
     current_project.status_id = next_status
     current_project.save()
     return "Status alterado de: " + str(current_status) + " para: " + str(next_status)
-    #return next_status
             
 def simple_upload(request):
     if request.method == 'POST' and request.FILES['myfile']:
@@ -127,10 +114,7 @@ def step_one(request, perfil_id):
         for i in range(1, (len(form.data) - 1)):
             email_body.append(form.data.get('email_field_' + str(i))) 
         sending_email(email_body, templates, 'project/email.html')
-        next_status = update_status(perfil_id, "success")
-        #current_project = Activity.objects.get(id=perfil_id)
-        #current_project.status_id = next_status
-        #current_project.save()
+        update_status(perfil_id, "success")
         Request(activity_id=perfil_id,
 				client_employee_id=1,
 				ey_employee_id=1,
@@ -142,7 +126,6 @@ def step_one(request, perfil_id):
     return render(request, 'project/email_sender.html', {'activity':teste,'templates': templates, 'form': form})
 
 def step_two(request, perfil_id):
-    print "Caio"
     print "STEP 2"
     Received.objects.filter(activity_id=perfil_id).delete() 
     teste = Activity.objects.get(id=perfil_id)
@@ -170,9 +153,7 @@ def step_two(request, perfil_id):
                  client_employee = req_object.client_employee,
                  ey_employee = req_object.ey_employee,
                  template = req_object.template).save()
-        next_status = update_status(perfil_id, "success")
-        #teste.status_id = next_status
-        #teste.save()
+        update_status(perfil_id, "success")
         return render(request, 'project/Project_Details_Step2_Success.html', {
             'uploaded_file_url': uploaded_file_url
         })
