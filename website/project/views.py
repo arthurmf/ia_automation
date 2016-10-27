@@ -116,7 +116,6 @@ def step(request, perfil_id):
     
                
 def step_one(request, perfil_id):
-    print "Eric"
     print "STEP 1"
     Request.objects.filter(activity_id=perfil_id).delete()
     teste = Activity.objects.get(id=perfil_id)
@@ -143,6 +142,7 @@ def step_one(request, perfil_id):
     return render(request, 'project/email_sender.html', {'activity':teste,'templates': templates, 'form': form})
 
 def step_two(request, perfil_id):
+    print "Caio"
     print "STEP 2"
     Received.objects.filter(activity_id=perfil_id).delete() 
     teste = Activity.objects.get(id=perfil_id)
