@@ -175,7 +175,7 @@ def step_two(request, perfil_id):
         return render(request, 'project/Project_Details_Step2_Success.html', {
             'uploaded_file_url': uploaded_file_url
         })
-        print "Esse é o Branch do Eric"
+        
     return render(request, 'project/Project_Details_Step2.html', {'activity':teste, 'documents':req, 'upload_form':upload_form})
     #except:
         #return render(request, 'project/Project_Details_Step2_N.html', {'activity':teste, 'documents':req})
