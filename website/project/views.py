@@ -93,11 +93,11 @@ def simple_upload(request):
 
             
 def step(request, perfil_id):
+    #Método destinado ao controle de passos do workflow
     act = Activity.objects.get(id=perfil_id)
     status_check = act.status
     options = {1: step_one,
                2: step_two,}
-    
 
     return HttpResponse(options[status_check.id](request, perfil_id));
     
