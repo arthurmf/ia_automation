@@ -1,19 +1,22 @@
+# -*- coding: utf-8 -*-
+# Libs de Django
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
-from .forms import ActivityForm, Template_Upload
-from project.models import Activity
-from documents.models import Request, Received
-from django.core.mail import send_mail
-from documents.models import Template, Request
-from documents.forms import EmailForm
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
 from django.template import Context
 from django.utils.safestring import mark_safe
-from website.settings import BASE_DIR
-from status.models import Workflow
-from django.conf import settings
 from django.core.files.storage import FileSystemStorage 
+# Libs de Settings
+from website.settings import BASE_DIR
+# Libs de forms
+from .forms import ActivityForm, Validation_Form
+from documents.forms import EmailForm
+# Libs de models
+from documents.models import Request, Received, Template
+from project.models import Activity
+from status.models import Workflow
+
 
 # Create your views here.
 def index(request):
@@ -21,7 +24,6 @@ def index(request):
         return HttpResponseRedirect("new")
     else:
         return render(request, 'project/Activities_Dashboard.html', {'activity': Activity.objects.all()})
-    
     
 def new(request):
     # if this is a POST request we need to process the form data
@@ -40,6 +42,7 @@ def new(request):
     else:
         form = ActivityForm()
     return render(request, 'project/new.html', {'form': form})
+
 
 def sending_email(email_variable, template_list, email_page):
     print email_variable
@@ -97,7 +100,8 @@ def step(request, perfil_id):
     act = Activity.objects.get(id=perfil_id)
     status_check = act.status
     options = {1: step_one,
-               2: step_two,}
+               2: step_two,
+               3: step_three,}
 
     return HttpResponse(options[status_check.id](request, perfil_id));
     
@@ -136,13 +140,16 @@ def step_two(request, perfil_id):
     mail_recipient = req_object.ey_employee.ey_employee_email
     mail_recipient_list = []
     mail_recipient_list.append(mail_recipient)
-    upload_form = Template_Upload()
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
+        myfile_list = []
+        myfile_list.append(myfile)
+        print myfile
+        print myfile_list
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
-        sending_email(mail_recipient_list, myfile, 'project/email_step2.html')
+        sending_email(mail_recipient_list, myfile_list, 'project/email_step2.html')
         
         Received(received_name = req_object.template.template_name, 
                  received_description = req_object.template.template_description,
@@ -158,6 +165,41 @@ def step_two(request, perfil_id):
             'uploaded_file_url': uploaded_file_url
         })
         
-    return render(request, 'project/Project_Details_Step2.html', {'activity':teste, 'documents':req, 'upload_form':upload_form})
+    return render(request, 'project/Project_Details_Step2.html', {'activity':teste, 'documents':req})
     #except:
         #return render(request, 'project/Project_Details_Step2_N.html', {'activity':teste, 'documents':req})
+
+    
+def step_three(request, perfil_id):
+    print "STEP 3"
+    validation = Validation_Form();
+    teste = Activity.objects.get(id=perfil_id)
+    req_list = []
+    req = Request.objects.filter(activity=perfil_id)
+    req_list = list(req)
+    options = {}
+    received_control = []
+    not_received_control = 0
+    for item in req_list:
+        if Received.objects.filter(activity=item.activity,template=item.template):
+            options[item.id] = 'Received'
+            received_control.append("Received")
+        else:
+            received_control.append("Not Received")
+            options[item.id] = 'Not Received'
+            not_received_control = 1
+    
+    if request.method == 'POST':
+        validation = Validation_Form(request.POST)
+        data = validation['validate'].value()
+        print data
+        print type(data)
+        data_bool = bool(data)
+        print type(data_bool)
+        #print validation.data['validate']
+        #data = validation.cleaned_data['validate']
+        if data_bool == True:
+            return render(request, 'project/Project_Details_Step2_Success.html', {'activity':teste, 'req_list': req_list, 'received_control':received_control, 'options':options, 'not_received_control':not_received_control})
+        else:
+            print "FALSE"
+    return render(request, 'project/Project_Details_Step3.html', {'activity':teste, 'req_list': req_list, 'received_control':received_control, 'options':options, 'not_received_control':not_received_control, 'validation':validation})

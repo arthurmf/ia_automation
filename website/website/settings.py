@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'status.apps.StatusConfig',
     'rules.apps.RulesConfig',
     'results.apps.ResultsConfig',
+    'log.apps.LogConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_tables2',
+    'django.contrib.admindocs'
 ]
 
 MIDDLEWARE = [
@@ -74,6 +76,8 @@ TEMPLATES = [
         },
     },
 ]
+
+LOGIN_REDIRECT_URL = '/' # It means home view
 
 WSGI_APPLICATION = 'website.wsgi.application'
 
@@ -146,3 +150,4 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+

@@ -1,0 +1,59 @@
+{% extends 'project/Template EY.html' %}
+
+{% block content %}
+{% load app_filters %}
+
+
+    <div  class="content-table">
+        <h2 class="ey-h2-style"><a class="ey_anchor_style" href="/project">Projetos</a> > Status de recebimento de documentação: {{activity.project_name}}</h2>
+        <h3 class="ey-h3-style">Status: {{activity.status}}</i></h3>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{validation}}
+                <table>
+                    <th>Project Name</th>
+                    <th>Document Name</th>
+                    <th>Description</th>
+                    <th>EY Requester</th>
+                    <th>Upload Status</th>
+                    {% for req in req_list %}
+                        <tr>
+                            <td>{{req.activity}}</td>
+                            <td>{{req.template}}</td>
+                            <td>{{req.template.template_description}}</td>
+                            <td>{{req.ey_employee}}</td>
+                            <td>
+                                {{options|get_dict_value:req.id}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <button class="button" onclick="myFunction()" type="submit"><span>Next </span></button>
+                <p id="demo"></p>
+                <script>
+                    function myFunction() {
+                        if ({{not_received_control}} != 0){
+                            if (confirm("There are not received files. Do you wish to continue?") == true) {
+                                x = "You pressed OK!";
+                                toggle()
+                            } else {
+                                x = "You pressed Cancel!";
+                                set_to_false();
+                            }
+                            document.getElementById("demo").innerHTML = x;
+                        }
+                    }
+                    
+                    function set_to_false() {
+                        document.getElementById('validate_id').value="False";
+                    }
+                </script>
+        </form>
+
+    
+    </div>
+
+
+
+{% endblock %}
