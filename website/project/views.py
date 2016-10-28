@@ -118,13 +118,16 @@ def step_one(request, perfil_id):
         for i in range(1, (len(form.data) - 1)):
             email_body.append(form.data.get('email_field_' + str(i))) 
         sending_email(email_body, templates, 'project/email.html')
-        update_status(perfil_id, "success")
+        update_status(perfil_id, "fail")
         Request(activity_id=perfil_id,
 				client_employee_id=1,
 				ey_employee_id=1,
 				template_id=1).save()
         return render(request, 'project/email_sender.html', {'activity':teste,'templates': templates, 'form': form})
+
+        #return redirect("index")
     else:
+        print "(ELSE)"
         form = EmailForm()
         
     return render(request, 'project/email_sender.html', {'activity':teste,'templates': templates, 'form': form})
@@ -192,14 +195,16 @@ def step_three(request, perfil_id):
     if request.method == 'POST':
         validation = Validation_Form(request.POST)
         data = validation['validate'].value()
-        print data
-        print type(data)
-        data_bool = bool(data)
-        print type(data_bool)
-        #print validation.data['validate']
-        #data = validation.cleaned_data['validate']
+        if data == "True":
+            data_bool = True
+        else:
+            data_bool = False
+
+
         if data_bool == True:
-            return render(request, 'project/Project_Details_Step2_Success.html', {'activity':teste, 'req_list': req_list, 'received_control':received_control, 'options':options, 'not_received_control':not_received_control})
+            return render(request, 'project/Project_Details_Step2_Success.html', {'activity':teste, 'req_list': req_list, 'received_control':received_control, 'options':options, 'not_received_control':not_received_control})            
         else:
             print "FALSE"
+            validation = Validation_Form()
+
     return render(request, 'project/Project_Details_Step3.html', {'activity':teste, 'req_list': req_list, 'received_control':received_control, 'options':options, 'not_received_control':not_received_control, 'validation':validation})

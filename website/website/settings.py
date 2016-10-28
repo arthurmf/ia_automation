@@ -77,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-#LOGIN_REDIRECT_URL = '/project/' # It means home view
+LOGIN_REDIRECT_URL = '/' # It means home view
 
 WSGI_APPLICATION = 'website.wsgi.application'
 
