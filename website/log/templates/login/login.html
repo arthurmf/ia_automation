@@ -1,60 +1,54 @@
-{% extends 'project/Template EY.html' %}
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="ie6 ielt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="ie7 ielt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+{% load static %}
+<meta charset="utf-8">
+<title>Paper Stack</title>
+<!--<link rel="stylesheet" type="text/css" href="style.css" />-->
+<link rel="stylesheet" href="{% static "/log/style.css" %}">
 
+</head>
+<body>
+<img class="ey-logo-horizontal" src="{% static "/log/EY-logo-horizontal.png" %}"/>
+<div class="container">
+	<section id="content">
+      <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+			<h1>Login</h1>
+			<div>
+				<!--<input type="text" placeholder="Username" required="" id="username" />-->
+                        {{ form.username }}
+			</div>
+			<div>
+				<!--<input type="password" placeholder="Password" required="" id="password" />-->
+                        {{ form.password }}
+			</div>
+			<div>
 
-{% block content %}
-    {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+                    {% if form.errors %}
+                        <center><p>Your username and password didn't match. Please try again.</p></center>
+                    {% endif %}
+                    
+                    {% if next %}
+                        {% if user.is_authenticated %}
+                        <center><p>Your account doesn't have access to this page. To proceed,
+                        please login with an account that has access.</p></center>
+                        {% else %}
+                        <center><p>Please login to see this page.</p></center>
+                        {% endif %}
+                    {% endif %}
 
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    {% else %}
-    <p>Please login to see this page.</p>
-    {% endif %}
-{% endif %}
- <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
-                    </div>
-                    <div class="panel-body">
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<p class="bs-component">
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
-</p>
-<p class="bs-component">
-<center><input class="btn btn-success btn-sm" type="submit" value="login" /></center>
-</p>
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
-</div>
-</div>
-</div>
-</div>
-</div>
+                       <input type="submit" value="Log in"/>
+                       <input type="hidden" name="next" value="{{ next }}" />
 
-{% endblock %}
-
-{% block javascript %}
-
-<script>
-{% if not user.is_authenticated %}
-$("ul.nav.navbar-nav.navbar-right").css("display","none");
-{% endif %}
-</script>
-
-{% endblock %}
+				<a href="#">Lost your password?</a>
+				<a href="#">Register</a>
+			</div>
+		</form><!-- form -->
+	</section><!-- content -->
+</div><!-- container -->
+</body>
+</html>
