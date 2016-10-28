@@ -85,6 +85,18 @@
     padding: 50px;
 }
 
+.logout{
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	top: 30px;
+	right: 30px;
+	background-image: url("logout.png");
+	text-indent: -99999px;
+}
+	
+
+
 .button {
   display: inline-block;
   border-radius: 4px;

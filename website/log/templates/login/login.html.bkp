@@ -1,0 +1,46 @@
+{% block content %}
+<h2 class="ey-h2-style"><a>Login</a></h2>
+
+<div class="content-table" style="padding:70px">
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>{{ form.username.label_tag }}</td>
+                <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+                <td>{{ form.password.label_tag }}</td>
+                <td>{{ form.password }}</td>
+            </tr>
+        </table>
+    
+    {% if form.errors %}
+        <center><p>Your username and password didn't match. Please try again.</p></center>
+    {% endif %}
+    
+    {% if next %}
+        {% if user.is_authenticated %}
+        <center><p>Your account doesn't have access to this page. To proceed,
+        please login with an account that has access.</p></center>
+        {% else %}
+        <center><p>Please login to see this page.</p></center>
+        {% endif %}
+    {% endif %}
+        <p><center><input type="submit" value="Send"/></center></p>
+            <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+
+<!--
+<script>
+{% if not user.is_authenticated %}
+$("ul.nav.navbar-nav.navbar-right").css("display","none");
+{% endif %}
+</script>
+-->
+{% endblock %}
