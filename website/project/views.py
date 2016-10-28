@@ -118,13 +118,16 @@ def step_one(request, perfil_id):
         for i in range(1, (len(form.data) - 1)):
             email_body.append(form.data.get('email_field_' + str(i))) 
         sending_email(email_body, templates, 'project/email.html')
-        update_status(perfil_id, "success")
+        update_status(perfil_id, "fail")
         Request(activity_id=perfil_id,
 				client_employee_id=1,
 				ey_employee_id=1,
 				template_id=1).save()
         return render(request, 'project/email_sender.html', {'activity':teste,'templates': templates, 'form': form})
+
+        #return redirect("index")
     else:
+        print "(ELSE)"
         form = EmailForm()
         
     return render(request, 'project/email_sender.html', {'activity':teste,'templates': templates, 'form': form})
