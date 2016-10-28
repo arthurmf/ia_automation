@@ -192,14 +192,16 @@ def step_three(request, perfil_id):
     if request.method == 'POST':
         validation = Validation_Form(request.POST)
         data = validation['validate'].value()
-        print data
-        print type(data)
-        data_bool = bool(data)
-        print type(data_bool)
-        #print validation.data['validate']
-        #data = validation.cleaned_data['validate']
+        if data == "True":
+            data_bool = True
+        else:
+            data_bool = False
+
+
         if data_bool == True:
-            return render(request, 'project/Project_Details_Step2_Success.html', {'activity':teste, 'req_list': req_list, 'received_control':received_control, 'options':options, 'not_received_control':not_received_control})
+            return render(request, 'project/Project_Details_Step2_Success.html', {'activity':teste, 'req_list': req_list, 'received_control':received_control, 'options':options, 'not_received_control':not_received_control})            
         else:
             print "FALSE"
+            validation = Validation_Form()
+
     return render(request, 'project/Project_Details_Step3.html', {'activity':teste, 'req_list': req_list, 'received_control':received_control, 'options':options, 'not_received_control':not_received_control, 'validation':validation})
