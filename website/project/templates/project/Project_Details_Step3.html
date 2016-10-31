@@ -4,7 +4,6 @@
 {% load app_filters %}
 
 
-    <div  class="content-table">
         <h2 class="ey-h2-style"><a class="ey_anchor_style" href="/project">Projetos</a> > Status de recebimento de documentação: {{activity.project_name}}</h2>
         <h3 class="ey-h3-style">Status: {{activity.status}}</i></h3>
 
@@ -26,6 +25,12 @@
                             <td>
                                 {{options|get_dict_value:req.id}}
                             </td>
+                            <td>
+                                <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="file" name="myfile">
+                        </form>
+                    </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -52,8 +57,6 @@
         </form>
 
     
-    </div>
-
 
 
 {% endblock %}

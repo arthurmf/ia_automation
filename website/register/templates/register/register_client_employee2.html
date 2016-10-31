@@ -1,0 +1,27 @@
+{% extends 'project/Template EY.html' %}
+
+{% load static %}
+
+{% block content %}
+    <!-- <link rel="stylesheet" href="{% static "/project/style_new.css" %}"> -->
+        
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+<div class="content-table" style="padding:0px">
+<h2 class="ey-h2-style"><a class="ey_anchor_style" href="/register">Cadastro</a> > Bla</h2>
+
+    <div align="center">
+        <tr>
+            <form method="POST"> 
+                {% csrf_token %}
+                <table>
+                    {{ user_form.as_table }} 
+                    {{ client_form.as_table }} 
+               </table>
+            <button class="button" type="submit"><span>Next</span></button>
+            </form>
+        </tr>
+    </div>
+</div>
+
+{% endblock %}

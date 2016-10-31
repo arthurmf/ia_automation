@@ -18,7 +18,7 @@
                     <td><a href="{{act.id}}">{{act.project_name}}</a></td>
                     <td>{{act.activity_description}}</td>
                     <td>{{act.client}}</td>
-                    <td>{{act.ey_employee_master}}</td>
+                    <td>{{act.ey_employee_master.ey_employee_user.first_name}} {{act.ey_employee_master.ey_employee_user.last_name}}</td>
                     <td>{{act.start_date}}</td>
                     <td>{{act.end_date}}</td>
                     <td>{{act.audit}}</td>

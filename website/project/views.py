@@ -140,7 +140,7 @@ def step_two(request, perfil_id):
     #try:
     req_object = Request.objects.get(activity__id=perfil_id)
 
-    mail_recipient = req_object.ey_employee.ey_employee_email
+    mail_recipient = req_object.ey_employee.ey_employee_user.email
     mail_recipient_list = []
     mail_recipient_list.append(mail_recipient)
     if request.method == 'POST' and request.FILES['myfile']:
@@ -192,7 +192,16 @@ def step_three(request, perfil_id):
             options[item.id] = 'Not Received'
             not_received_control = 1
     
-    if request.method == 'POST':
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        myfile_list = []
+        myfile_list.append(myfile)
+        print myfile
+        print myfile_list
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        
         validation = Validation_Form(request.POST)
         data = validation['validate'].value()
         if data == "True":
@@ -202,7 +211,7 @@ def step_three(request, perfil_id):
 
 
         if data_bool == True:
-            return render(request, 'project/Project_Details_Step2_Success.html', {'activity':teste, 'req_list': req_list, 'received_control':received_control, 'options':options, 'not_received_control':not_received_control})            
+            return render(request, 'project/Project_Details_Step2_Success.html', {'activity':teste, 'req_list': req_list, 'received_control':received_control, 'options':options, 'not_received_control':not_received_control, 'uploaded_file_url': uploaded_file_url})            
         else:
             print "FALSE"
             validation = Validation_Form()
