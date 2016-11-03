@@ -16,15 +16,22 @@ from documents.forms import EmailForm
 from documents.models import Request, Received, Template
 from project.models import Activity
 from status.models import Workflow
-
+from django.contrib.auth.models import User
+from register.models import Ey_employee
 
 # Create your views here.
 def index(request):
-    if request.method == 'POST':        
+    #if request.user.is_staff:
+    if request.method == 'POST':
         return HttpResponseRedirect("new")
     else:
+        #print request.user.id
         return render(request, 'project/Activities_Dashboard.html', {'activity': Activity.objects.all()})
-    
+        #print Ey_employee.objects.filter(ey_employee_user=request.user.id)
+        #return render(request, 'project/Activities_Dashboard.html', {'activity': Activity.objects.get(id)})
+    #else:
+    #       return redirect('step_two')
+
 def new(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':

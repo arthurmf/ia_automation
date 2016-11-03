@@ -3,8 +3,9 @@ from __future__ import unicode_literals
 
 from django.db import models
 from audit.models import Type
-from register.models import Client, Ey_employee
+from register.models import Client, Ey_employee, Client_employee
 from status.models import List
+
 
 # Tables related to Services
 class Service_style(models.Model):
@@ -24,6 +25,7 @@ class Activity(models.Model):
     ey_employee_master = models.ForeignKey(Ey_employee, on_delete=models.PROTECT)
     service_style = models.ForeignKey(Service_style, on_delete=models.PROTECT)
     activity_description = models.CharField(max_length=4000)
+    activity_code = models.CharField(max_length=250, default="XXXXXXX")
 
     def __str__(self):
         return self.project_name
@@ -40,3 +42,11 @@ class Activity(models.Model):
     
     #def nome_cliente(self, cliente_projeto):
        # return Activity(project_name=self, client=cliente_projeto).get
+
+class Activity_EY(models.Model):
+    activity = models.ForeignKey(Activity)
+    ey_employee = models.ForeignKey(Ey_employee)
+
+class Activity_Client(models.Model):
+    activity = models.ForeignKey(Activity)
+    client_employee = models.ForeignKey(Client_employee)

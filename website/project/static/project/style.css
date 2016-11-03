@@ -70,6 +70,17 @@
 	left: 25px;
 }
 
+
+.create-group-button{
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	top: 30px;
+	right: 90px;
+	background-image: url("create-group-button.png");
+	text-indent: -99999px;
+}
+
 .p-footer-style{
 	display: inline-block;
 }
@@ -95,6 +106,17 @@
 	text-indent: -99999px;
 }
 	
+.welcome{
+	width: auto;
+	height: 200px;
+	position: absolute;
+	top: 120px;
+	right: 10px;
+	text-align: center;
+	color: white;
+    font-family: 'EYInterstate', 'Roboto', sans-serif;
+    font-size: 15px;
+}
 
 
 .button {
@@ -243,4 +265,94 @@ table tr:hover td{
 	background: #f2f2f2;
 	background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
 	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
+}
+
+.basic-grey {
+    margin: 0 auto;
+    width: 500px;
+    background: #F7F7F7;
+    padding: 25px 15px 25px 10px;
+    font: 12px 'EYInterstate', 'Roboto', sans-serif;
+    color: #888;
+    text-shadow: 1px 1px 1px #FFF;
+    border:1px solid #E4E4E4;
+}
+.basic-grey h1 {
+    font-size: 25px;
+    padding: 0px 0px 10px 0px;
+    display: block;
+    border-bottom:1px solid #E4E4E4;
+    margin: -10px -15px 30px -10px;;
+    color: #888;
+}
+.basic-grey h1>span {
+    display: block;
+    font-size: 11px;
+}
+.basic-grey label {
+    display: inline-block;
+    margin: 0px;
+    width: 30%;
+    vertical-align: middle;
+    margin-bottom: 16px;
+    margin-top: 2px;
+    text-align: left;
+}
+.basic-grey label>span {
+    float: left;
+    width: 20%;
+    text-align: right;
+    padding-right: 10px;
+    margin-top: 10px;
+    color: #888;
+}
+.basic-grey input[type="text"], .basic-grey input[type="email"], .basic-grey textarea, .basic-grey select {
+    border: 1px solid #DADADA;
+    color: #888;
+    height: 30px;
+    margin-bottom: 16px;
+    margin-right: 6px;
+    margin-top: 2px;
+    outline: 0 none;
+    padding: 3px 3px 3px 5px;
+    width: 60%;
+    font-size: 12px;
+    line-height:15px;
+    box-shadow: inset 0px 1px 4px #ECECEC;
+    -moz-box-shadow: inset 0px 1px 4px #ECECEC;
+    -webkit-box-shadow: inset 0px 1px 4px #ECECEC;
+    display: inline-block;
+    vertical-align: middle;
+}
+.basic-grey textarea{
+    padding: 5px 3px 3px 5px;
+}
+.basic-grey select {
+    background: #FFF url('down-arrow.png') no-repeat right;
+    background: #FFF url('down-arrow.png') no-repeat right);
+    appearance:none;
+    -webkit-appearance:none; 
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: '';
+    width: 60%;
+    height: 35px;
+    line-height: 25px;
+    display: inline-block;
+}
+.basic-grey textarea{
+    height:100px;
+}
+.basic-grey .button {
+    background: grey;
+    border: none;
+    padding: 10px 25px 10px 25px;
+    color: #FFF;
+    box-shadow: 1px 1px 5px #B6B6B6;
+    border-radius: 3px;
+    text-shadow: 1px 1px 1px grey;
+    cursor: pointer;
+}
+.basic-grey .button:hover {
+    background: #ffe700
 }

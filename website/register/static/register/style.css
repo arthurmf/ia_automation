@@ -1,0 +1,19 @@
+.human-resources{
+	width: 128px;
+	height: 128px;
+	position: absolute;
+	top: 250px;
+	left: 400px;
+	background-image: url("human-resources.png");
+	text-indent: -99999px;
+}
+
+.manager{
+	width: 128px;
+	height: 128px;
+	position: absolute;
+	top: 250px;
+	left: 800px;
+	background-image: url("manager.png");
+	text-indent: -99999px;
+}

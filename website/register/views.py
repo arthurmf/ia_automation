@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import redirect, render
 from .forms import ClientEmployeeUserForm, ClientEmployeeForm, EyEmployeeUserForm, EyEmployeeForm
 from django.contrib.auth.forms import UserCreationForm
@@ -6,6 +7,10 @@ from django import forms
 from .models import Client_employee, Ey_employee
 
 # Create your views here.
+
+def register(request):
+    return render(request, 'register/register.html')
+
 def register_ClientEmployee_part1(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -17,7 +22,7 @@ def register_ClientEmployee_part1(request):
             return redirect('register_ClientEmployee_part2', perfil_id=post.id)
     else:
         form = UserCreationForm()
-    return render(request, 'register/register_client_employee1.html', {'form': form})
+    return render(request, 'register/register_employee_1.html', {'form': form, 'type_employee': 'Cliente EY'})
 
 def register_ClientEmployee_part2(request, perfil_id):
     user = User.objects.get(id=perfil_id)
@@ -57,7 +62,7 @@ def register_ClientEmployee_part2(request, perfil_id):
         client_form.fields['client_user'].widget = forms.HiddenInput()
         #client_form.client_user = perfil_id
         
-    return render(request, 'register/register_client_employee2.html', {'user_form': user_form, 'client_form': client_form})
+    return render(request, 'register/register_employee_2.html', {'user_form': user_form, 'client_form': client_form, 'type_employee': 'Cliente EY'})
     #return render(request, 'register/register_client_employee2.html', {'user_form': user_form})
 
 def register_EyEmployee_part1(request):
@@ -71,7 +76,7 @@ def register_EyEmployee_part1(request):
             return redirect('register_EyEmployee_part2', perfil_id=post.id)
     else:
         form = UserCreationForm()
-    return render(request, 'register/register_client_employee1.html', {'form': form})
+    return render(request, 'register/register_employee_1.html', {'form': form, 'type_employee': 'Funcionário EY'})
 
 def register_EyEmployee_part2(request, perfil_id):
     user = User.objects.get(id=perfil_id)
@@ -110,5 +115,5 @@ def register_EyEmployee_part2(request, perfil_id):
         client_form.fields['ey_employee_user'].widget = forms.HiddenInput()
         #client_form.client_user = perfil_id
         
-    return render(request, 'register/register_client_employee2.html', {'user_form': user_form, 'client_form': client_form})
+    return render(request, 'register/register_employee_2.html', {'user_form': user_form, 'client_form': client_form, 'type_employee': 'Funcionário EY'})
     #return render(request, 'register/register_client_employee2.html', {'user_form': user_form})

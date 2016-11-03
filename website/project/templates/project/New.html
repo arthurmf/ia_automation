@@ -11,15 +11,12 @@
 <h2 class="ey-h2-style"><a class="ey_anchor_style" href="/project">Projetos</a> > Novo Projeto</h2>
 
     <div align="center">
-        <tr>
-            <form method="POST"> 
-                {% csrf_token %}
-                <table>                        
-                    {{ form.as_table }} 
-               </table>
-            <button class="button" type="submit"><span>Send </span></button>
+            <form method="POST" class="basic-grey"> 
+                <h1>Create Project</h1>
+                {% csrf_token %}       
+                    {{ form.as_p }} 
+                <button class="button" type="submit"><span>Send </span></button>
             </form>
-        </tr>
     </div>
 </div>
 

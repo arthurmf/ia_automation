@@ -20,23 +20,28 @@
                  <div class="ey-subheader-style"></div>
 			<h1 class="ey-h1-style">IA - Automation Tool</h1>
 			<img class="ey-logo" src="{% static "/project/EYNewLogo.png" %}"/>
-            
+
+            {% if user.is_superuser  %}
+                <a href="/register" class="create-group-button">Create User</a>
+            {% endif %}
                  <a href="/logout" class="logout">Login teste</a>
+                 <p class="welcome">Welcome, {{ user.first_name }} {{ user.last_name }}</p>
+
 			<div class="content">
                  <div class="content-table">
 
-                
+
                     {% block content %}
                     {% endblock %}
 
 
                 </div>
-			</div> 
- 
+			</div>
 
-           
+
+
 		</main>
-	
+
 	</body>
 	
 	    

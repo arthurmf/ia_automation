@@ -1,0 +1,23 @@
+{% extends 'project/Template EY.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="{% static "/register/style.css" %}">
+
+<h2 class="ey-h2-style"><a class="ey_anchor_style" href="/register">Cadastro</a></h2>
+
+{% if user.is_superuser  %}
+
+<div align="center">
+    <a href="/register/client_employee/" class="human-resources">Clients</a>
+    <a href="/register/ey_employee/" class="manager">Clients</a>
+</div>
+
+{% else %}
+    <p> Não esta autenticado</p>
+{% endif %}
+
+{% endblock %}
