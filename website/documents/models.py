@@ -16,8 +16,7 @@ class Template(models.Model):
     template_author = models.ForeignKey(Ey_employee, on_delete=models.PROTECT)
     template_path = models.CharField(max_length=500)
     is_template = models.BooleanField(default=False)
-    
-    
+
     def __str__(self):
         return self.template_name
 
@@ -29,7 +28,7 @@ class Request(models.Model):
     send_counter = models.DecimalField(max_digits=5, decimal_places=0)
     resend_reason = models.CharField(max_length=500, default="")
     resend_datetime = models.DateTimeField(editable=False, auto_now_add=True)
-    
+    request_path = models.CharField(max_length=500)
 
 class Received(models.Model):
     activity = models.ForeignKey(Activity, on_delete=models.PROTECT)

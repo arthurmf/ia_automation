@@ -60,5 +60,5 @@ class Ey_employee(models.Model):
     ey_employee_user = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):
-        #return self.ey_employee_name
+        return self.ey_employee_name
         return str(self.ey_employee_user.first_name) + " " + str(self.ey_employee_user.last_name)

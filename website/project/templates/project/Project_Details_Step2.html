@@ -4,33 +4,50 @@
 {% load app_filters %}
 
 
-    <div  class="content-table">
         <h2 class="ey-h2-style"><a class="ey_anchor_style" href="/project">Projetos</a> > Detalhes do Projeto: {{activity.project_name}}</h2>
         <h3 class="ey-h3-style">Status: {{activity.status}}</i></h3>
 
-<form method="post" enctype="multipart/form-data">
         <table>
             <th>Project Name</th>
             <th>Document Name</th>
+            <th>Description</th>
             <th>EY Requester</th>
-            <th>Upload</th>
+            <th>File Selection</th>
+            <th></th>
+            <th>Status</th>
             {% for doc in documents %}
                 <tr>
                     <td>{{doc.activity}}</td>
                     <td>{{doc.template}}</td>
-                    <td>{{doc.ey_employee}}</td>
-                    <td>
+                    <td>{{doc.template.template_description}}</td>
+                    <td>{{doc.ey_employee.ey_employee_user.first_name}} {{doc.ey_employee.ey_employee_user.last_name}}</td>
+                   
+                        {% if options|get_dict_value:doc.id == "Not Received" %}
                         <form method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <input type="file" name="myfile">
-                            
+                            <td>
+                                {% csrf_token %}
+                                <input type="file" id="myfile_{{doc.id}}" name="myfile_{{doc.id}}">
+                            </td>
+                            <td>
+                                <button type=submit id="mybutton_{{doc.id}}" name="mybutton_{{doc.id}}">Upload</button>
+                            </td>
                         </form>
+                        {% else %}
+                            <td>
+                                {% csrf_token %}
+                                <input type="file" id="myfile_{{doc.id}}" name="myfile_{{doc.id}}" disabled>
+                            </td>
+                            <td>
+                                <button type=submit id="mybutton_{{doc.id}}" name="mybutton_{{doc.id}}" disabled>Upload</button>
+                            </td>
+                        {% endif %}
+                  
+                    <td>
+                        <p id="options_{{doc.id}}">{{options|get_dict_value:doc.id}}</p>
                     </td>
                 </tr>
             {% endfor %}
         </table>
         <button class="button" type="submit"><span>Send </span></button>
-         </form>
-    </div>
-
+        
 {% endblock %}

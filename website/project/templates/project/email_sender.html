@@ -23,7 +23,13 @@
                         <td>{{template.template_description}}</td>
                         <td>{{template.audit_type}}</td>                
                         <td>
-                            <input type="textarea" name="email_field_{{ forloop.counter }}" >
+                            <select name="dropdown">
+                                <option value="    "></option>
+                                {% for email in email_list %}
+                                    <option name="email_field_{{ forloop.counter }}" value="{{email.client_employee.client_user.email}}">{{email.client_employee.client_user.email}}
+                                </option>
+                                {% endfor %}
+                            </select>
                         </td>
                     </tr>
                 {% endfor %}

@@ -6,7 +6,6 @@ from audit.models import Type
 from register.models import Client, Ey_employee, Client_employee
 from status.models import List
 
-
 # Tables related to Services
 class Service_style(models.Model):
     service_name = models.CharField(max_length=100)
@@ -44,9 +43,9 @@ class Activity(models.Model):
        # return Activity(project_name=self, client=cliente_projeto).get
 
 class Activity_EY(models.Model):
-    activity = models.ForeignKey(Activity)
-    ey_employee = models.ForeignKey(Ey_employee)
+    activity = models.ForeignKey(Activity, on_delete=models.PROTECT)
+    ey_employee = models.ForeignKey(Ey_employee, on_delete=models.PROTECT)
 
 class Activity_Client(models.Model):
-    activity = models.ForeignKey(Activity)
-    client_employee = models.ForeignKey(Client_employee)
+    activity = models.ForeignKey(Activity, on_delete=models.PROTECT)
+    client_employee = models.ForeignKey(Client_employee, on_delete=models.PROTECT)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*- 
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 from project.models import Activity
 from django import forms
 
@@ -20,11 +20,17 @@ class ActivityForm(ModelForm):
         
         self.fields['status'].widget = forms.HiddenInput()
         self.fields['service_style'].widget = forms.HiddenInput()
-        
+
     class Meta:
         model = Activity
-        fields = ('project_name','activity_description', 'start_date', 'end_date', 'client', 'audit', 'ey_employee_master', 'status', 'service_style')
-        
+        fields = (
+        'project_name', 'activity_description', 'start_date', 'end_date', 'client', 'audit', 'ey_employee_master',
+        'status', 'service_style')
+        widgets = {
+            'activity_description': Textarea(attrs={'cols': 80, 'rows': 20}),
+            'start_date': forms.DateInput(attrs={'class': 'datepicker'}),
+        }
+
 class Template_Upload(forms.Form):
     upload = forms.FileField(label='', required=False)
 
