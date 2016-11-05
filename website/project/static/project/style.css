@@ -356,3 +356,8 @@ table tr:hover td{
 .basic-grey .button:hover {
     background: #ffe700
 }
+
+.button2{
+    float: left;
+    margin-left: 40px;
+}

@@ -7,31 +7,36 @@
         <h2 class="ey-h2-style"><a class="ey_anchor_style" href="/project">Projetos</a> > Status de recebimento de documentação: {{activity.project_name}}</h2>
         <h3 class="ey-h3-style">Status: {{activity.status}}</i></h3>
 
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+        
+            
             {{validation}}
                 <table>
                     <th>Project Name</th>
                     <th>Document Name</th>
                     <th>Description</th>
                     <th>EY Requester</th>
+                    <th>Requested To</th>
                     <th>Upload Status</th>
-                    {% for req in req_list %}
+                    <th>Resend Counter</th>
+                    <th>Resend Request</th>
+                    {% for doc in documents %}
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}    
                         <tr>
-                            <td>{{req.activity}}</td>
-                            <td>{{req.template}}</td>
-                            <td>{{req.template.template_description}}</td>
-                            <td>{{req.ey_employee}}</td>
+                            <td id="myactivity_{{doc.id}}" name="myactivity_{{doc.id}}">{{doc.activity}}</td>
+                            <td id="mytemplate_{{doc.id}}" name="mytemplate_{{doc.id}}">{{doc.template}}</td>
+                            <td id="mytemplate_description_{{doc.id}}" name="mytemplate_description_{{doc.id}}">{{doc.template.template_description}}</td>
+                            <td id="myname_{{doc.id}}" name="myname_{{doc.id}}">{{doc.ey_employee.ey_employee_user.first_name}} {{doc.ey_employee.ey_employee_user.last_name}}</td>
+                            <td id="mycliname_{{doc.id}}" name="mycliname_{{doc.id}}">{{doc.client_employee.client_user.first_name}} {{doc.client_employee.client_user.last_name}}</td>
                             <td>
-                                {{options|get_dict_value:req.id}}
+                                {{options|get_dict_value:doc.id}}
                             </td>
+                            <td id="mycounter_{{doc.id}}" name="mycounter_{{doc.id}}">{{doc.send_counter}}</td>
                             <td>
-                                <form method="post" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <input type="file" name="myfile">
-                        </form>
-                    </td>
+                                <button type=submit id="mybutton_{{doc.id}}" name="mybutton_{{doc.id}}">Resend</button>
+                            </td>
                         </tr>
+                    </form>
                     {% endfor %}
                 </table>
                 <button class="button" onclick="myFunction()" type="submit"><span>Next </span></button>
@@ -54,7 +59,7 @@
                         document.getElementById('validate_id').value="False";
                     }
                 </script>
-        </form>
+        
 
     
 

@@ -1,0 +1,55 @@
+{% extends 'project/Template EY.html' %}
+
+{% block content %}
+{% load app_filters %}
+
+
+        <h2 class="ey-h2-style"><a class="ey_anchor_style" href="/project">Projetos</a> > Status de recebimento de documentação: {{activity.project_name}}</h2>
+        <h3 class="ey-h3-style">Status: {{activity.status}}</i></h3>
+
+                    <div align="center">
+                        <form method="POST" class="basic-grey"> 
+                            <h1>Resend Project Request</h1>
+                            {% csrf_token %}       
+                            <p id="myactivity_{{doc.id}}" name="myactivity_{{doc.id}}">
+                                <label>Project Name</label>
+                                <input id="id_project_name" maxlength="250" name="project_name" type="text" value="{{doc.activity}}" disabled>
+                            </p>
+                            <p id="mytemplate_{{doc.id}}" name="mytemplate_{{doc.id}}">
+                                <label>Document Name</label>
+                                <input id="id_project_name" maxlength="250" name="project_name" type="text" value="{{doc.template}}" disabled>
+                            </p>
+                            <p id="mytemplate_description_{{doc.id}}" name="mytemplate_description_{{doc.id}}">
+                                <label>Description</label>
+                                <input id="id_project_name" maxlength="250" name="project_name" type="text" value="{{doc.template.template_description}}" disabled>
+                            </p>
+                            <p id="myname_{{doc.id}}" name="myname_{{doc.id}}">
+                                <label>EY Requester</label>
+                                <input id="id_project_name" maxlength="250" name="project_name" type="text" value="{{doc.ey_employee.ey_employee_user.first_name}} {{doc.ey_employee.ey_employee_user.last_name}}" disabled>
+                            </p>
+                            <p id="mycliname_{{doc.id}}" name="mycliname_{{doc.id}}">
+                                <label>Requested To</label>
+                                <input id="id_project_name" maxlength="250" name="project_name" type="text" value="{{doc.client_employee.client_user.first_name}} {{doc.client_employee.client_user.last_name}}" disabled>
+                            </p>
+                            <p>
+                                <label>Upload Status</label>
+                                <input id="id_project_name" maxlength="250" name="project_name" type="text" value="{{options|get_dict_value:doc.id}}" disabled>
+                            </p>
+                            <p id="mycounter_{{doc.id}}" name="mycounter_{{doc.id}}">
+                                <label>Resend Counter</label>
+                                <input id="id_project_name" maxlength="250" name="project_name" type="text" value="{{doc.send_counter}}" disabled>
+                            </p>
+                            <p id="myreason_{{doc.id}}" name="myreason_{{doc.id}}">
+                                <label>Resend Reason</label>
+                                <textarea cols="80" id="activity_description" maxlength="4000" name="activity_description" rows="20" required=""></textarea>
+                            </p>
+                                
+                            <button id="mybutton_resend_{{doc.id}}" name="mybutton_resend_{{doc.id}}" class="button" type="submit">
+                                <span>Send </span>
+                            </button>
+                        </form>
+                    </div>
+  
+
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'project/Template EY.html' %}
+
+{% load static %}
+{% block content %}
+
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+<div class="content-table" style="padding:0px">
+<h2 class="ey-h2-style"><a class="ey_anchor_style" href="/project">Projetos</a> > Novo Projeto</h2>
+
+    <div align="center">
+            <form method="POST" class="basic-grey">
+                <h1>New Document</h1>
+                {% csrf_token %}
+                    {{ form.as_p }}
+                <button class="button" type="submit"><span>Send </span></button>
+            </form>
+    </div>
+</div>
+{% endblock %}
