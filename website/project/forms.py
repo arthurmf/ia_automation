@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*- 
 from django.forms import ModelForm, Textarea
+from django.contrib.auth.models import User
 from project.models import Activity
+from register.models import Ey_employee
 from django import forms
 
 
@@ -20,6 +22,14 @@ class ActivityForm(ModelForm):
         
         self.fields['status'].widget = forms.HiddenInput()
         self.fields['service_style'].widget = forms.HiddenInput()
+        #self.fields['ey_employee_master'] = forms.ModelChoiceField(queryset=User.objects.filter(is_staff=1))
+
+    #def return_full_name(queryset):
+    #    full_name_list = []
+    #    for query in queryset:
+    #        full_name_list.append(query.first_name + " " + query.last_name)
+    #    return full_name_list
+
 
     class Meta:
         model = Activity

@@ -2,7 +2,7 @@
 
 {% block content %}
 {% load app_filters %}
-
+{% load static %}
 
         <h2 class="ey-h2-style"><a class="ey_anchor_style" href="/project">Projetos</a> > Status de recebimento de documentação: {{activity.project_name}}</h2>
         <h3 class="ey-h3-style">Status: {{activity.status}}</i></h3>
@@ -39,7 +39,31 @@
                     </form>
                     {% endfor %}
                 </table>
-                <button class="button" onclick="myFunction()" type="submit"><span>Next </span></button>
+                
+                
+                    <button class="button" onclick="myFunction()" type="submit"><span>Next </span></button>
+
+                    <!--<a name="mydownload" id="mydownload" href="http://localhost:8000/media/downloads/media.zip" download>
+                        <button class="button button2" name="mydownload" id="mydownload"><span>Download files </span></button>
+                    </a>-->
+                    
+                <!--<form method="post" enctype="multipart/form-data" action="http://localhost:8000/media/downloads/{{file_name}}">
+                    {% csrf_token %}       
+                    <button class="button button2" name="mydownload" id="mydownload" value="Download">
+                        <span>Download files </span>
+                    </button>
+                    
+                </form>-->
+
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}       
+                    <button class="button button2" name="mydownload" id="mydownload" value="Download">
+                        <span>Download files </span>
+                    </button>
+                    
+                </form>
+
                 <p id="demo"></p>
                 <script>
                     function myFunction() {
@@ -58,6 +82,16 @@
                     function set_to_false() {
                         document.getElementById('validate_id').value="False";
                     }
+                    
+                    function downloadFile(file)
+                    {
+                        window.location=file;
+                    }
+                    
+                    function setFormAction() {
+                        document.getElementById("mydownload").action = //some code to get the filename;
+                    }
+                    
                 </script>
         
 

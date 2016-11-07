@@ -2,18 +2,57 @@
 	width: 128px;
 	height: 128px;
 	position: absolute;
-	top: 250px;
+	top: 200px;
 	left: 400px;
 	background-image: url("human-resources.png");
-	text-indent: -99999px;
+	text-align: center;
+	color: black;
+    font-family: 'EYInterstate', 'Roboto', sans-serif;
+    font-size: 11px;
+    line-height: 300px;
+}
+
+.human-resources2{
+	width: 128px;
+	height: 128px;
+	position: absolute;
+	top: 400px;
+	left: 400px;
+	background-image: url("businessman.png");
+	text-align: center;
+	color: black;
+    font-family: 'EYInterstate', 'Roboto', sans-serif;
+    font-size: 11px;
+    line-height: 300px;
 }
 
 .manager{
 	width: 128px;
 	height: 128px;
 	position: absolute;
-	top: 250px;
+	top: 200px;
 	left: 800px;
 	background-image: url("manager.png");
-	text-indent: -99999px;
+	text-align: center;
+	color: black;
+    font-family: 'EYInterstate', 'Roboto', sans-serif;
+    font-size: 11px;
+    line-height: 300px;
 }
+
+
+
+.manager2{
+	width: 128px;
+	height: 128px;
+	position: absolute;
+	top: 400px;
+	left: 800px;
+	background-image: url("manager.png");
+	text-align: center;
+	color: black;
+    font-family: 'EYInterstate', 'Roboto', sans-serif;
+    font-size: 11px;
+    line-height: 300px;
+}
+

@@ -23,10 +23,10 @@
                         <td>{{template.template_description}}</td>
                         <td>{{template.audit_type}}</td>                
                         <td>
-                            <select name="dropdown">
+                            <select name="dropdown" onchange="run()">
                                 <option value="    "></option>
                                 {% for email in email_list %}
-                                    <option name="email_field_{{ forloop.counter }}" value="{{email.client_employee.client_user.email}}">{{email.client_employee.client_user.email}}
+                                    <option id="email_field_{{ forloop.counter }}" name="email_field_{{ forloop.counter }}"">{{email.client_employee.client_user.email}}
                                 </option>
                                 {% endfor %}
                             </select>
@@ -35,9 +35,24 @@
                 {% endfor %}
             </table>
             <button class="button" type="submit" name="send"><span>Send </span></button>
-            <button class="button button2" type="submit2" name="new_document"><span>New Document</span></button>
-        <form>
-    
+            <!--
+            <button class="button button2" type="submit2" name="new_document">
+                <span>New Document</span></button>
+               -->
+            </form>
     </div>
 </div>
+
+<!--
+
+<script>
+    function run() {
+        //if (document.getElementById("email_field_1").value; != "") {
+
+        //}
+        var dop = document.getElementsByName("dropdown")[0].selectedIndex;
+        alert(dop);
+    }
+</script>
+
 {% endblock %}

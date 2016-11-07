@@ -17,39 +17,42 @@ from documents.models import Request, Received, Template
 from project.models import Activity, Activity_Client
 from status.models import Workflow
 from register.models import Client_employee, Ey_employee
+from status.models import List
 from django.contrib.auth.models import User
 from pandas import DataFrame
+import shutil
 
 import os
 import datetime
 
 # Create your views here.
 def index(request):
-    #if request.user.is_staff:
     if request.method == 'POST':
         return HttpResponseRedirect("new")
     else:
-        #print request.user.id
-        return render(request, 'project/Activities_Dashboard.html', {'activity': Activity.objects.all()})
-        #print Ey_employee.objects.filter(ey_employee_user=request.user.id)
-        #return render(request, 'project/Activities_Dashboard.html', {'activity': Activity.objects.get(id)})
-    #else:
-    #       return redirect('step_two')
+        if request.user.is_superuser:
+            print Activity.objects.all()
+            return render(request, 'project/Activities_Dashboard.html', {'activity': Activity.objects.all()})
+        elif not request.user.is_staff:
+            client_employee_id = Client_employee.objects.get(client_user=request.user.id)
+            activity_client_list = list(Activity_Client.objects.filter(client_employee=client_employee_id))
+            project_client_list = []
+
+            for act in activity_client_list:
+                project_client_list.append(Activity.objects.get(id=act.activity_id))
+            return render(request, 'project/Activities_Dashboard.html', {'activity': project_client_list})
+        else:
+            return render(request, 'project/Activities_Dashboard.html', {'activity': Activity.objects.filter(
+            ey_employee_master=Ey_employee.objects.get(ey_employee_user_id=request.user.id))})
+
 
 def new(request):
-    # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
         form = ActivityForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
             post = form.save(commit=False)
-            #post.author = request.user
             post.save()
-            #return HttpResponseRedirect("feliz")
             return redirect("index")
-
-    # if a GET (or any other method) we'll create a blank form
     else:
         form = ActivityForm()
     return render(request, 'project/new.html', {'form': form})
@@ -60,7 +63,6 @@ def check_if_path_exists(path):
         os.makedirs(path)
 
 def sending_email(email, template_list, email_page):
-    message = []
     subject = "Email de teste django"
     from_email = "ia.automation.tool@gmail.com"
     to = email
@@ -113,6 +115,9 @@ def handle_uploaded_file(f,dyn_path,req):
     with open(real_path, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
+       
+def compact_file_generator(request, folder_to_compact, file_format, path_of_folder):
+    shutil.make_archive(folder_to_compact, file_format, path_of_folder)
             
 
 def step(request, perfil_id):
@@ -132,59 +137,46 @@ def step_one(request, perfil_id):
     email_list = Activity_Client.objects.filter(activity_id=perfil_id)
 
     if request.method == 'POST':
-        print request.POST
-        if "new_document" in request.POST:
-            return redirect('new_document')
-            #form = NewDocumentForm(request.POST)
-            #return render(request, 'documents/new_document.html', {'form': form})
-        elif "send" in request.POST:
-            dropdown_list = request.POST.getlist("dropdown")
-            df = DataFrame(zip(dropdown_list, templates))
-            print df
-            for email in set(dropdown_list):
-                if "@" in email:
-                    filtered_templates =  list(df[df[0] == email][1])
-                    #sending_email(email, filtered_templates, 'project/email.html')
-                    user_client_id = User.objects.get(email=email).id
-                    for template in filtered_templates:
+        dropdown_list = request.POST.getlist("dropdown")
+        df = DataFrame(zip(dropdown_list, templates))
+        print df
+        for email in set(dropdown_list):
+            if "@" in email:
+                filtered_templates =  list(df[df[0] == email][1])
+                sending_email(email, filtered_templates, 'project/email.html')
+                user_client_id = User.objects.get(email=email).id
+                for template in filtered_templates:
+                    client_emp_obj = Client_employee.objects.get(client_user_id=user_client_id)
+                    try:
+                        Request.objects.get(activity_id=perfil_id,
+                            client_employee_id=Client_employee.objects.get(client_user_id=user_client_id).id,
+                            ey_employee_id=Ey_employee.objects.get(ey_employee_user_id=request.user.id).id,
+                            template_id=template.id,
+                            send_counter=0)
+                    except:
+                        path_string = "/media/" + \
+                                      str(activity.audit.id) + "." + str(activity.audit) + "/" + \
+                                      str(activity.id) + "." + str(activity.project_name) + "/" + \
+                                      "1.Documentos Recebidos" + "/" + \
+                                      str(request.user.id) + "." + request.user.first_name + request.user.last_name + "/" + \
+                                      str(client_emp_obj.id) + "." + User.objects.get(email=email).first_name + \
+                                      User.objects.get(email=email).last_name + "/" + \
+                                      str(template.id) + "." + template.template_name + "/"
 
-                        client_emp_obj = Client_employee.objects.get(client_user_id=user_client_id)
-                        ey_emp_obj = Ey_employee.objects.get(ey_employee_user_id=request.user.id)
+                        Request(activity_id=perfil_id,
+                            client_employee_id=Client_employee.objects.get(client_user_id=user_client_id).id,
+                            ey_employee_id=Ey_employee.objects.get(ey_employee_user_id=request.user.id).id,
+                            template_id=template.id,
+                            send_counter=0,
+                            request_path=path_string).save()
 
-                        try:
-                            Request.objects.get(activity_id=perfil_id,
-                                client_employee_id=Client_employee.objects.get(client_user_id=user_client_id).id,
-                                ey_employee_id=Ey_employee.objects.get(ey_employee_user_id=request.user.id).id,
-                                template_id=template.id,
-                                send_counter=0)
-                        except:
-                            path_string = "/media/" + \
-                                          str(activity.audit.id) + "." + str(activity.audit) + "/" + \
-                                          str(activity.id) + "." + str(activity.project_name) + "/" + \
-                                          "1.Documentos Recebidos" + "/" + \
-                                          str(request.user.id) + "." + request.user.first_name + request.user.last_name + "/" + \
-                                          str(client_emp_obj.id) + "." + User.objects.get(email=email).first_name + \
-                                          User.objects.get(email=email).last_name + "/" + \
-                                          str(template.id) + "." + template.template_name + "/"
-
-                            Request(activity_id=perfil_id,
-                                client_employee_id=Client_employee.objects.get(client_user_id=user_client_id).id,
-                                ey_employee_id=Ey_employee.objects.get(ey_employee_user_id=request.user.id).id,
-                                template_id=template.id,
-                                send_counter=0,
-                                request_path=path_string).save()
-
-                            #check_if_path_exists(path_string)
-                            check_if_path_exists(BASE_DIR.replace("\\""", "/") + path_string)
-                            #print path_string
-
-        update_status(perfil_id, "fail")
-        print "feliz"
+                        check_if_path_exists(BASE_DIR.replace("\\""", "/") + path_string)
+        update_status(perfil_id, "success")
         return render(request, 'project/email_sender.html', {'activity':activity,'templates': templates, 'email_list': email_list})
-        #return redirect("index")
     else:
         print "(ELSE)"
         return render(request, 'project/email_sender.html', {'activity':activity,'templates': templates, 'email_list': email_list})
+        #return "blabla"
 
 def step_two(request, perfil_id):
     print "STEP 2"
@@ -257,32 +249,42 @@ def step_two(request, perfil_id):
     
 def step_three(request, perfil_id):
     print "STEP 3"
+    
+    #Instanciação de objetos (Activity e Request)    
     actv = Activity.objects.get(id=perfil_id)
     doc_request = Request.objects.filter(activity__id=perfil_id)
     doc_request = list(doc_request)
+    
+    #Inicialização da lista de opções (que verifica se o documento foi recebido ou não)
     options = {}
     not_received_control = 0
+    
+    
     #Verificação antes do POST de quais documentos já foram enviados pelo cliente
     file_received_verifier(request, options, not_received_control, doc_request)
+    
     if request.method == 'POST':
+        
         #Para cada item dentro de request, é montado o ID do botão (upload) pressionado.
         for req in doc_request:
             aux_myfile = req.id
             aux_mybutton = "mybutton_" + str(aux_myfile)
-            aux_mybutton_resend = "mybutton_resend_" + str(aux_myfile)
-            req_object = req
+            aux_mybutton_resend = "mybutton_resend_" + str(aux_myfile)            
+
+
             
+            #Verifica se o arquivo 
             if options[aux_myfile] == 'Received':
-                doc_received = Received.objects.filter(activity=req_object.activity).filter(template=req_object.template).filter(client_employee=req_object.client_employee).filter(ey_employee=req_object.ey_employee)
+                doc_received = Received.objects.filter(activity=req.activity).filter(template=req.template).filter(client_employee=req.client_employee).filter(ey_employee=req.ey_employee)
                 doc_received = list(doc_received)
-                print doc_received
+
                 doc_rec = doc_received[0]
             #Caso o botão (upload) pressionado seja correspondente com o POST, o upload do arquivo é realizado.
             if aux_mybutton in request.POST:
                 
-                
-                    
-                    
+
+
+
                 #Para que a página seja recarregada com os valores de "Recebido" ou "Não Recebido", é necessário chamar novamente o método
                 file_received_verifier(request, options, not_received_control, doc_request)
     
@@ -298,7 +300,7 @@ def step_three(request, perfil_id):
     
                 #})
      
-                return render(request, 'project/Project_Details_Step3_Resend.html', {'activity':actv, 'doc':req_object, 'options':options, 'not_received_control':not_received_control})
+                return render(request, 'project/Project_Details_Step3_Resend.html', {'activity':actv, 'doc':req, 'options':options, 'not_received_control':not_received_control})
             
             if aux_mybutton_resend in request.POST:
                 reason = "mybutton_resend_" + str(req.id)
@@ -324,6 +326,29 @@ def step_three(request, perfil_id):
                 sending_email(mail_recipient, req.template, 'project/email_step3.html')
                 
                 return render(request, 'project/Project_Details_Step3.html', {'activity':actv, 'documents':doc_request, 'options':options, 'not_received_control':not_received_control})
+            
+        if 'mydownload' in request.POST:
+            #definição do path para criação do arquivo compactado
+            path = BASE_DIR + "\\media"
+            
+            #chamada do método de compactação de arquivos
+            compact_file_generator(request, 'media', 'zip', path)
+            
+            #Definição das variáveis para a movimentação do arquivo gerado
+            arquive_to_move = BASE_DIR + "\\media.zip"
+            path_to_move = path + "\\downloads\\"
+            shutil.move(arquive_to_move, path_to_move)
+            
+            #Definição de nova nomenclatura do arquivo gerado
+            file_name = 'media_' + datetime.datetime.now().strftime("%Y-%m-%d__%H_%M_%S") + ".zip"
+            #Arquivo a ser renomeado
+            file_to_rename = path_to_move + 'media.zip'
+            #Novo nome a ser atribuido ao arquivo renomeado
+            file_new_name = path_to_move + file_name
+            #Chamada de método para renomear arquivo
+            os.rename(file_to_rename, file_new_name)
+            
+            return render(request, 'project/Project_Details_Step3.html', {'activity':actv, 'documents':doc_request, 'options':options, 'not_received_control':not_received_control})
     else:
         
         return render(request, 'project/Project_Details_Step3.html', {'activity':actv, 'documents':doc_request, 'options':options, 'not_received_control':not_received_control})

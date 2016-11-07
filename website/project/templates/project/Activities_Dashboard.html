@@ -15,7 +15,11 @@
             <th>Status</th>
             {% for act in activity %}
                 <tr>
-                    <td><a href="{{act.id}}">{{act.project_name}}</a></td>
+                    {% if act.status_id != 2 and request.user.is_staff != 1 %}
+                        <td>{{act.project_name}}</td>
+                    {% else %}
+                        <td><a href="{{act.id}}">{{act.project_name}}</a></td>
+                    {% endif %}
                     <td>{{act.activity_description}}</td>
                     <td>{{act.client}}</td>
                     <td>{{act.ey_employee_master.ey_employee_user.first_name}} {{act.ey_employee_master.ey_employee_user.last_name}}</td>
@@ -23,6 +27,7 @@
                     <td>{{act.end_date}}</td>
                     <td>{{act.audit}}</td>
                     <td>{{act.status}}</td>
+                    <!--<td onclick="run(this)" id="status_{{forloop.counter}}" value="{{act.status_id}}">{{act.status}}</td>-->
                 </tr>
             {% endfor %}
     </table>
@@ -30,5 +35,17 @@
     <form method="post">{% csrf_token %}
         <button class="button" action=""><span>New Project </span></button>
     </form>
-    
+
+    <a href="/documents/">
+        <button class="button button2" type="submit2"><span>New Document</span></button>
+    </a>
+
+<script>
+    function run(object) {
+            if(document.getElementById(object.id).innerText == "Aguardando Documentos") {
+            alert("Não Pode!");
+            }
+        }
+</script>
+
 {% endblock %}

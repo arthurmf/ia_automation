@@ -1,0 +1,48 @@
+{% extends 'project/Template EY.html' %}
+
+{% load static %}
+
+{% block content %}
+    <!-- <link rel="stylesheet" href="{% static "/project/style_new.css" %}"> -->
+        
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+
+{% if user.is_superuser  %}
+
+<div class="content-table" style="padding:0px">
+<h2 class="ey-h2-style"><a class="ey_anchor_style" href="/register">Cadastro</a> > Project vs EY Employees </h2>
+
+    <div align="center">
+            <form action="" method="post" autocomplete="on" class="basic-grey">{% csrf_token %}
+                <h1>Project vs EY Employees</h1>
+                <p>
+                <label>Project</label>
+                    <select name="dropdown"">
+                        <option value="    "></option>
+                        {% for activity in activities %}
+                            <option id="act_{{ forloop.counter }}" name="activity_{{ forloop.counter }}" value="{{activity.id}}">{{activity.project_name}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </p>
+                <p>
+                <label>EY Employee</label>
+                    <select name="dropdown"">
+                        <option value="    "></option>
+                        {% for ey_employee in ey_employees %}
+                            <option id="ey_{{ forloop.counter }}" name="ey_emp_{{ forloop.counter }}" value="{{ey_employee.id}}">{{ey_employee.ey_employee_user.first_name}} {{ey_employee.ey_employee_user.last_name}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </p>
+        <button class="button" type="submit" name="add"><span>Add</span></button>
+        <button class="button button2" type="submit" name="remove"><span>Remove</span></button>
+            </form>
+    </div>
+</div>
+
+{% else %}
+    <p> Não esta autenticado</p>
+{% endif %}
+
+{% endblock %}

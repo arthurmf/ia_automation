@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from .models import Client_employee, Ey_employee
-
+from project.models import Activity, Activity_Client, Activity_EY
 # Create your views here.
 
 def register(request):
@@ -114,6 +114,61 @@ def register_EyEmployee_part2(request, perfil_id):
         client_form = EyEmployeeForm()
         client_form.fields['ey_employee_user'].widget = forms.HiddenInput()
         #client_form.client_user = perfil_id
-        
+
     return render(request, 'register/register_employee_2.html', {'user_form': user_form, 'client_form': client_form, 'type_employee': 'Funcionário EY'})
-    #return render(request, 'register/register_client_employee2.html', {'user_form': user_form})
+
+def project_client_employee(request):
+
+    activities = Activity.objects.all()
+    clients = Client_employee.objects.all()
+    if request.method == 'POST':
+        dropdown_list = request.POST.getlist("dropdown")
+        if "add" in request.POST:
+            try:
+                query_object = Activity_Client.objects.get(activity=Activity.objects.get(id=int(dropdown_list[0])),
+                                                           client_employee=Client_employee.objects.get(
+                                                               id=int(dropdown_list[1])))
+                print "Beleza"
+            except:
+                Activity_Client(activity=Activity.objects.get(id=int(dropdown_list[0])),
+                                client_employee=Client_employee.objects.get(id=int(dropdown_list[1]))).save()
+        elif "remove" in request.POST:
+            try:
+                query_object = Activity_Client.objects.get(activity=Activity.objects.get(id=int(dropdown_list[0])),
+                                                           client_employee=Client_employee.objects.get(
+                                                               id=int(dropdown_list[1])))
+                query_object.delete()
+            except:
+                pass
+        return render(request, 'register/register_project_client_employee.html',
+                      {'activities' : activities, 'clients' : clients })
+    else:
+        return render(request, 'register/register_project_client_employee.html',
+                      {'activities' : activities, 'clients' : clients })
+
+def project_ey_employee(request):
+    activities = Activity.objects.all()
+    ey_employees = Ey_employee.objects.all()
+    if request.method == 'POST':
+        dropdown_list = request.POST.getlist("dropdown")
+        if "add" in request.POST:
+            try:
+                query_object = Activity_EY.objects.get(activity=Activity.objects.get(id=int(dropdown_list[0])),
+                                                       ey_employee=Ey_employee.objects.get(id=int(dropdown_list[1])))
+                print "Beleza"
+            except:
+                Activity_EY(activity=Activity.objects.get(id=int(dropdown_list[0])),
+                            ey_employee=Ey_employee.objects.get(id=int(dropdown_list[1]))).save()
+        elif "remove" in request.POST:
+            try:
+                query_object = Activity_EY.objects.get(activity=Activity.objects.get(id=int(dropdown_list[0])),
+                                                       ey_employee=Ey_employee.objects.get(id=int(dropdown_list[1])))
+                query_object.delete()
+            except:
+                pass
+        return render(request, 'register/register_project_ey_employee.html',
+                      {'activities' : activities, 'ey_employees' : ey_employees })
+    else:
+        return render(request, 'register/register_project_ey_employee.html',
+                      {'activities' : activities, 'ey_employees' : ey_employees })
+
